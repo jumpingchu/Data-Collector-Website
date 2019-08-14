@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from send_email import send_email
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 
 # 設定資料庫位置，讓 Flask 和 SQLAlchemy 連接
 # app.config['SQLALCHEMY_DATABASE_URI']=資料庫系統://使用者名稱: 密碼  @本地      /資料庫名
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:密碼@localhost/data_collector'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:password@localhost/data_collector'
 
 # 將 app 建立為 SQLAlchemy 物件
 db = SQLAlchemy(app)
@@ -34,7 +36,21 @@ def success():
     if request.method == 'POST':
         email = request.form['email_name']
         height = request.form['height_name']
-        return render_template("success.html")
+        # 確認 E-mail 不在資料庫內 => query email 的數量應該要是 0
+        if db.session.query(Data).filter(Data.email_==email).count() == 0:  
+            data = Data(email, height)
+            db.session.add(data)
+            db.session.commit()
+            # sqlalchemy.sql.func.avg(Data.height_): 平均值的SQL語法
+            # scalar(): 取得SQL語法所跑出的資料
+            average_height = db.session.query(func.avg(Data.height_)).scalar()
+            average_height = round(average_height, 1)
+            count = db.session.query(Data).count()
+            send_email(email, height, average_height, count)
+            return render_template("success.html")
+        
+        else:
+            return render_template("Index.html", text="The email has been used!")
 
 # 404 error
 # 因為在 index.html 中 submit 的 action 指向是一個檔案(success.html)

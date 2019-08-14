@@ -8,6 +8,9 @@
         <div class="container">
             <h1>Collecting Height</h1>
             <h3>Please fill the entries to get population statistics in height.</h3>
+            <div class="message">
+                {{text | safe}}
+            </div>
             <form action="{{url_for ('success')}}" method="POST">
                 <input title="Your email will be safe with us" placeholder="Enter your email address" type="email" name="email_name" required><br>
                 <input title="Your data will be safe with us" placeholder="Enter your height in cm" max="300" min="50" step="0.1" type="number" name="height_name" required><br>
