@@ -25,4 +25,7 @@
 
     $ heroku config
 
-    
+Run python or bash
+
+    $ heroku run bash
+
