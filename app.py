@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 # 設定資料庫位置，讓 Flask 和 SQLAlchemy 連接
 # app.config['SQLALCHEMY_DATABASE_URI']=資料庫系統://使用者名稱: 密碼  @本地      /資料庫名
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:password@localhost/data_collector'
-
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:password@localhost/data_collector'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mfiujoyihkbyrm:6c7e8fdd0020a47329c8699e83e379ec6921a3882c00e9c060d20ed5f30eee50@ec2-184-72-237-95.compute-1.amazonaws.com:5432/d9orup86i20k62?sslmode=require'
 # 將 app 建立為 SQLAlchemy 物件
 db = SQLAlchemy(app)
 
@@ -48,9 +48,7 @@ def success():
             count = db.session.query(Data).count()
             send_email(email, height, average_height, count)
             return render_template("success.html")
-        
-        else:
-            return render_template("Index.html", text="The email has been used!")
+        return render_template("index.html", text="The email has been used!")
 
 # 404 error
 # 因為在 index.html 中 submit 的 action 指向是一個檔案(success.html)
