@@ -21,3 +21,8 @@
 
     $ heroku addons:create heroku-postgresql hobby-dev -a database_name
 
+查看資料庫連結 URI
+
+    $ heroku config
+
+    
