@@ -14,18 +14,3 @@
     5. 檢查 E-mail 是否重複
     6. 資料庫 query，並計算平均值、總數
     7. 自動寄出 E-mail
-
-## Command lines
-
-在 heroku 創建 postgreSQL 資料庫
-
-    $ heroku addons:create heroku-postgresql hobby-dev -a database_name
-
-查看資料庫連結 URI
-
-    $ heroku config
-
-Run python or bash
-
-    $ heroku run bash
-
