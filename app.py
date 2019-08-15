@@ -48,7 +48,7 @@ def success():
             count = db.session.query(Data).count()
             send_email(email, height, average_height, count)
             return render_template("success.html")
-        return render_template("Index.html", text="The email has been used!")
+        return render_template("index.html", text="The email has been used!")
 
 # 404 error
 # 因為在 index.html 中 submit 的 action 指向是一個檔案(success.html)
